@@ -1,0 +1,83 @@
+
+.title {
+	position: relative;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	font-family: brandon-grotesque;
+  	font-weight: 300;
+  	font-style: normal;
+  	font-size: 120px;
+  	transition: color 1.4s ease;
+  	margin-bottom: 0px;
+}
+
+.title:hover {
+	color: #ccc;
+}
+
+.about {
+	position: relative;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	font-family: brandon-grotesque;
+	font-weight: 300;
+	font-style: normal;
+	font-size: 30px;
+	transition: color .9s ease;
+	margin-top: 0px;
+}
+
+.about:hover {
+	color: #ccc;
+}
+
+.create {
+	position: relative;
+	margin-top: 7%;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	width: 13%;
+	padding: 2.75%;
+	font-family: brandon-grotesque;
+	font-weight: 300;
+	font-size: 22px;
+	font-style: normal;
+	border-radius: 0.3em;
+	border: 2px solid gray;
+	transition: color .33s ease, border .33s ease;
+}
+
+.create:hover {
+	color: #ccc;
+	border: 2px solid #ccc;
+}
+
+#info {
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	font-family: brandon-grotesque;
+	font-weight: 300;
+	font-size: 22px;
+	font-style: normal;
+	width: 32.5%;
+	border-left: 1px solid darkgray;
+	border-right: 1px solid darkgray;
+}
+
+h3 {
+	text-align: center;
+	font-weight: 120;
+}
+
+.code {
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	font-family: consolas;
+	background-color: lightgray;
+	font-size: 16px;
+}

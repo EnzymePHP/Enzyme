@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Enzyme</title>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="http://use.typekit.net/c/a46a56/1w;brandon-grotesque,7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191,Y2j:R:n3,Y2q:R:n7/d?3bb2a6e53c9684ffdc9a9bf51d5b2a62c96de82d85c740a9a6cf00238e44787a1a4f864b491e2f1e26b6913ab05f130bafff4e23c294a6dbb4581a8ed4c6930450e4b06062a1b3aef91b6014752c0ea1fa2cd055de4cf53f147abdadcae15040531d744d7ab0eeaa4d8e712145c1323d9142527c8a9e8fb034aaaae0dfe44191aaa3a27ddd6743d215" media="all">
+		<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script src="js/main.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div id="head">
+				<h1 class="title">&lt;enzyme&gt;</h1>
+			</div>
+
+			<div id="info">
+				Welcome to Enzyme! Enzyme is an extremely lightweight PHP framework that allows you to
+				create applications extremely quickly, with easy to read code. Enzyme provides numerous
+				features to help you create these applications such as routing, controllers, models
+				and database support. Use this guide to help you get started writing some awesome 
+				Enzyme applications.
+
+				<h3>Installing</h3>
+				Installing Enzyme is extremely easy. All you need to do is download Enzyme here. Once
+				you have downloaded Enzyme, unzip it into the root directory of your project and work
+				from there.
+
+				<h3>Routing</h3>
+				Enzyme has made it so that you don't have to do any routing calls yourself. Instead,
+				your route will just call upon the controller and controller method that you have set
+				in your url, as well as pass any parameters in your further url components. Because we
+				have to use our controller in order to point to our views, we will talk about controllers
+				next. Don't worry, they are very simple to use, but before we can do that, we must configure
+				out htaccess to rewrite to the correct url, because Enzyme doesn't know the url that
+				you are going to be hosting your application on whenever it is installed. In order to do this,
+				navigate to the "public" directory and open up the ".htaccess" file. In this file,
+				on line 4, replace the words "/enzyme-dev/public" with your sub-url, followed by "/public".
+				However, this is not required if you are just using your domain name. You will only need
+				to include the sub-url if you are requiring your users to go to type "public" into their
+				browser, but that would be bad. So for example, if your user is traveling to 
+				"yourdomain.com", ideally, the public folder would be accessed by landing on that page.
+				If that is the case for you, then you can just delete the line and continue with routing 
+				normally. If you are still confused, then you check out <a href="http://httpd.apache.org/docs/current/mod/mod_rewrite.html#rewritebase">this</a> 
+				page for more information about rewriting URLs (specifically the "RewriteBase" directive).
+
+				<h3>Controllers and Methods</h3>
+				Controllers are essentially the functionality of your application, and fortunately enough,
+				they work so that, unlike some frameworks, they aren't all completely written for you, are 
+				customizable, and allow you to create your own applications with your own features. Many
+				frameworks seem as if all they require you to do is to give your controller a name, while
+				the framework tries to search for a pre-made middleware to try and do what you want. The 
+				problem with this is that you aren't able to create your own methods and you might end 
+				up hating what the framework comes up with. Fortunately, Enzyme allows for simplicity
+				in writing controllers, but maximum control. First of all, we need to analyze how
+				we access and use our controllers in Enzyme, and also how the methods are called. By default,
+				we should almost always write <i>indexes</i> on our controllers. Indexes, are essentially
+				the method that is called without passing a method in the URL. This is important for a few
+				reasons. First of all, indexes allows us to keep our URLs less verbose. For example,
+				if we had a controller containing the class "Register", and we wanted to have a method in that
+				controller/class that shows the view with the registration form, we would need to write
+				a method for that. So, if we called that method "showView()", then the user would have to
+				land on the URL, "/register/showView". This, of course, is stupid, and verbose. We instead,
+				would like to show the registration form by just landing on the URL "/register". This, is 
+				where the indexes come in. By creating a method called "index()", we can pass through the 
+				code to show the view with the registration form, and access it by just landing on 
+				"/register". Our controller would now essentially look like this <br>
+
+				<div class="code">
+					&lt;?php
+					<br>
+					class Register extends Controller {<br>
+						&nbsp;public function index()<br>
+						&nbsp;{<br>
+						&nbsp; &nbsp;	// Code goes here<br>
+						&nbsp;}<br>
+					}
+				</div>
+
+				<br>
+
+				So, you may see why this could be useful. However, keep in mind, that we won't always be using
+				an index for every page and every request. Obviously, we may inted to use other functions
+				to handle POST requests, which we will talk about later in the guide. Now, at this point, it
+				isn't hard at all to underestimate the diversity and functionality that we can throw in
+				to a controller very quickly. But let me ensure you, that it is quite diverse. The
+				main point of a controller in the first place is to interact and poke around with
+				the schema that we write, which at the moment, we have none of. Schema is extremely
+				important in your applications, and should be used almost all of the time when it
+				is applicable. You will see in a second how we can write schema, and also how
+				schema can be used with out controllers and methods. In order to begin controlling
+				schema, we need to write a model. Because we must learn about it first, we will come
+				back to controllers later and talk about how we can manage our schema within
+				our controllers.
+
+				<h3>Models And Schema</h3>
+				The greatest feature of Enzyme is being lightweight and not depending on a load of frameworks
+				that will change how Enzyme works. Instead of adding in Eloquent, we instead wrote our own
+				way of interfacing with a database using PDO, and you will see this in a second. In order to
+				actually interface with the database and link the database to schema or a model, we need to 
+				figure out how models work and then check out how our database component works. We will check
+				that out in a second, but for now, it is unimportant, and we can just write models in order
+				to control our application without a database. Before, we can begin creating our own
+				models, we must first assess why models are important. You can think of a model as a
+				table in a database, but much smaller essentially. At the core, it's just a 
+				way of organizing your data into multiple instances. We will have a model for
+				almost every duplicate type in our application. To simplify this even further,
+				we can take an example, such as a user. A large application like Google,
+				has well over 100,000,000 users, so as you can imagine a User model would
+				be important because there is clearly some duplicates. Of all the things
+				that Enzyme has, a model is not a specific device that you have to explicitly
+				define before creating. In fact, the only time that we ever use the term
+				model, is when linking it to our controller. But, when we create it, we just
+				write a class normally, but write it as if we were giving it variables and functions
+				that tell us what that model does. So, let's do that! We can easily create a simple
+				model by just writing a class and giving it one variable, then using Enzyme's <i>model</i>
+				function to do the rest inside of our controller. So, if we want to create
+				a model with the name of "User" that takes in a name, we would write the following code
+				in our "/app/models" directory
+				<br>
+				<div class="code">
+					&lt;?php
+					<br>
+					class User {<br>
+						&nbsp;public $name;<br>
+					}
+				</div>
+
+				<br>
+
+				Now, to access this data in the model, and also add it to our instance, we just need to use
+				the controller <i>model</i> function which is actually really easy. In our controller, we just
+				need to take in a parameter in our URL for a test, and also give it a default value, just in
+				case we don't want to pass through a name in our URL. In our controller, we just give the following
+				code <br>
+
+				<div class="code">
+					&lt;?php
+					<br>
+					class Register extends Controller {<br>
+						&nbsp;public function index($name = '')<br>
+						&nbsp;{<br>
+						&nbsp; &nbsp;	$user = $this->model('User');<br>
+						&nbsp; &nbsp;	$user->name = $name;<br>
+						&nbsp;}<br>
+					}
+				</div>
+
+				<br>
+
+				By doing this, we are taking the first parameter that we pass through in the URL, and assigning
+				the <i>User</i> model's <i>name</i> field to the value of that parameter. Note, that if we 
+				pass in a second component of our URL, that does not match the name of a method in the controller
+				that we are accessing, then the controller will automatically pass the data as a parameter to the
+				index. You have now successfully created a model, and managed the model in your controller. Now,
+				let's create views, and manage those inside of our controller.
+
+				<h3>Views</h3>
+				Views are probably the most important part of our application, at least to our users. Essentially,
+				views are the only way that the user is going to see anything that is in the least bit, aesthetically
+				pleasing. However, the common misconception of views is that they are all front end development. While
+				that may be close to true, there is data that we should and can pass through to the view in order
+				to make our development easier and more manageable by Enzyme itself. Views are extremely easy to 
+				implement inside of Enzyme as long as you have a controller and a view that has been written. Inside
+				of your "/views" directory, just write a .php file with any front-end code that you want to implement
+				inside of it, but make sure that you keep track of any sub-directories (after "/views") that you 
+				place the view in. If there isn't any, than you don't have to worry about it, but some people may
+				if that is something that you wish to have inside of your views. In your controller, you can just call
+				the <i>view</i> function and as a string for the first parameter, pass in any sub-directories (followed
+				by a forward slash), and then the name of your view (without the ".php"). You should also keep in mind
+				that Enzyme works only with ".php" views because we need to pass in data to our view, which is impossible
+				with an HTML file. The second parameter of our <i>view</i> method is an array with any data that we 
+				want to send to the view. So, I will pass in the index 'view' and give it the value of our User model's
+				name value. Our code should now look like this <br>
+
+				<div class="code">
+					&lt;?php
+					<br>
+					class Register extends Controller {<br>
+						&nbsp;public function index($name = '')<br>
+						&nbsp;{<br>
+						&nbsp; &nbsp;	$user = $this->model('User');<br>
+						&nbsp; &nbsp;	$user->name = $name;<br>
+						&nbsp; &nbsp;	$this->view('index', ['name' => $user->name]);<br>
+						&nbsp;}<br>
+					}
+				</div>
+
+				<br>
+
+				As you can see, it is very easy to implement views, and I am just sending in a very simple array of data.
+				However, at this point we haven't used this data inside of our view. To do this, we only have to add to our 
+				view just a little bit. This is the code that I included in my view, and it will just say "Hello" to the name
+				of the user (which is the first parameter that we pass through to the index). My view now looks likes this <br>
+					<div class="code">
+						Hello, &lt;=$data['name']?>.
+					</div>
+
+					<br>
+				Notice, that you can replace 'name' with the name of the index that you passed through in the array to the view.
+
+				<h3>Linking To Files</h3>
+				We are now missing one simple piece of code that we need to implement, and that is any CSS or JavaScript code that
+				we would usually see in a web page. Fortunately, Enzyme makes that very easy to do! Linking stylesheets was made
+				very easy to do by Enzyme. Due to the fact that views have access to the Enzyme <i>App</i> functions, you can
+				call the <i>stylesheet</i> function to link to your stylesheets. Our stylesheets should ALWAYS be placed in
+				the "/public/css" directory if you are using CSS. If you are using another CSS pre-processor such as SASS or
+				LESS, you should compile the code into CSS and placed into the directory prior to running your application
+				(SASS support coming in next version). Whenever you pass the name of your stylesheet into the <i>stylesheet</i>
+				method, you don't need to pass a file extension. In my view, I just create a PHP closure and call <i>App::stylesheet('stylesheet')</i>
+				as my <i>href</i> in a <i>link</i> tag, to bind the stylesheet "/public/css/stylesheet.css". Your code should
+				now look like this in your view <br>
+				<div class="code">
+						&lt;link rel="stylesheet" href="&lt;?php App::stylesheet('stylesheet'); ?&gt;" /&gt;
+					</div>
+
+					<br>
+
+					Linking to JavaScript files is just as easy, you just have to call the <i>App::javascript</i> method which
+					attaches any JavaScript file (without extension) in the "/public/js" directory. Your code should look
+					like this <br>
+
+					<div class="code">
+						&lt;script src="&lt;?php App::javascript('script'); ?&gt;"&gt;&lt;/script&gt;
+					</div>
+
+					<br>
+					That's it for linking files, and there's not much more to it.
+
+					<h3>POST Requests</h3>
+					POST requests are also easy to handle in Enzyme. However, they work a little bit differently
+					than you might expect. When the request is sent, the user should be directed to a URL in order
+					to rediret you to a controller and method, where the request will be handeled. Then, it is up
+					to you to redirect the user to the correct location afterwards with the correct information.
+					For example, if we wanted our view to have a login form that submits a username, we would
+					simple create a form with a text field by the name of username and set the action of the
+					form to our controller and method. If I wanted to submit to the "login" method of my
+					"Auth" controller, my form would look like this <br>
+
+					<div class="code">
+						&lt;form action="./auth/login" method="post"&gt;
+						<br>
+						&nbsp; &lt;input type="text" name="username" /&gt;<br>
+						&nbsp; &lt;input type="submit" value="Log In" /&gt;
+						<br>
+						&lt;/script&gt;
+					</div>
+
+					<br>
+
+					Handling the POST data in our controller is also very easy, we just need to use the
+					<i>getPostData()</i> method from Enzyme, then we can set a variable to the array
+					that the method returns. Your controller would look something like this <br>
+
+					<div class="code">
+					&lt;?php
+					<br>
+					class Auth extends Controller {<br>
+						&nbsp;public function login()<br>
+						&nbsp;{<br>
+						&nbsp; &nbsp;	$data = $this->getPostData();<br>
+						&nbsp; &nbsp;	echo $data['username'];
+						&nbsp;}<br>
+					}
+				</div>
+
+				<br>
+
+				This would just output the username that the user passes into the form. If the
+				POST request is null (the user didn't pass any data), then no data will
+				be returned by calling <i>getPostData()</i>. Of course, we can also
+				redirect the user and send the username that they pass in as the first parameter
+				of our <i>home/index</i> method. To do this we just use the <i>route()</i> method.
+				It is up to you to change the view to say hello to whatever the user passes in,
+				because we just changed the view to have a form, but your controller would look
+				like this <br>
+
+
+					<div class="code">
+					&lt;?php
+					<br>
+					class Auth extends Controller {<br>
+						&nbsp;public function login()<br>
+						&nbsp;{<br>
+						&nbsp; &nbsp;	$data = $this->getPostData();<br>
+						&nbsp; &nbsp;	$this->route('home/'.$data['username']);
+						&nbsp;}<br>
+					}
+				</div>
+
+				<br>
+
+
+				<h3>Hashing and Verifying Passwords</h3>
+				By calling <i>App::hash()</i> and passing in a string, you will receive a hashed
+				string with a salt. To verify this with Enzyme, just call <i>App::verify()</i> and
+				pass in the hashed, correct password from the database as the first argument, and
+				the unhashed, password supplied by the user trying to authenticate themselves as the second.
+
+				<h3>Database</h3>
+				Database transactions are extremely easy. All you have to do is reference the Enzyme <i>DB</i>
+				class and use it exactly like the PHP <i>PDO</i> class (more database support in next version).
+				Migrations are in beta, but not available in this version of Enzyme.
+
+				<h3>That's It Really</h3>
+				While you can do a lot with Enzyme, this page has covered all of the features that you need to know about.
+				Enzyme 2 is currently in development, enjoy the framework and good luck!
+
+				<h3>New Releases</h3>
+				Soon we plan to add plenty of more features. Currently, the only goal really of Enzyme
+				is to be extensible and small. Right now, the development team is small (1 person), and
+				with that I can't add a load of new features immediately. In fact, I have had trouble implementing
+				some features that I would love to include especially as far as security goes. As of right now,
+				I am giving priority to adding customizable routes, XSS and CSRF protection, and database support.
+				Like I said, I really want to keep this small, and that is the main goal of Enzyme. That's honestly
+				why I haven't just thrown in Illuminate with Elqouent to make database transactions, migrations,
+				and seeding all easier. I hope that Enzyme can grow as one of the smallest PHP frameworks
+				out there, and I am working hard to make PHP a better language.
+			</div>
+		</div>
+	</body>
+</html>
